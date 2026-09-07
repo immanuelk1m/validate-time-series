@@ -35,7 +35,7 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(marketplace["name"], "validate-time-series")
 
     def test_local_document_links(self):
-        documents = [ROOT / "README.md", ROOT / "README.en.md", ROOT / "CONTRIBUTING.md"]
+        documents = [ROOT / "README.md", ROOT / "README.ko.md", ROOT / "CONTRIBUTING.md"]
         documents += list((ROOT / "docs").glob("*.md"))
         for document in documents:
             for link in re.findall(r"\]\(([^)]+)\)", document.read_text(encoding="utf-8")):
