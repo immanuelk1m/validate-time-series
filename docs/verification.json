@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-09-07T13:38:42.360572+00:00",
+  "python": "3.13.5",
+  "original_skill_files": 19,
+  "original_skill_byte_preservation": "passed",
+  "evaluator_unit_tests": {
+    "passed": 60,
+    "failed": 0,
+    "status": "passed"
+  },
+  "repository_tests": {
+    "status": "passed",
+    "passed": 15,
+    "failed": 0,
+    "publication_success_test": "mocked subprocesses, no network writes"
+  },
+  "synthetic_demo": {
+    "status": "passed",
+    "forecast_rows": 5256,
+    "series": 2,
+    "horizons": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "baselines": [
+      "naive",
+      "drift",
+      "seasonal-naive"
+    ]
+  },
+  "publication_dry_run": {
+    "status": "passed",
+    "remote_created": false,
+    "file_count": 39
+  },
+  "not_executed": [
+    "GitHub repository creation",
+    "Git push",
+    "Hosted GitHub Actions",
+    "Codex runtime installation and skill invocation",
+    "Live Astra API evaluation",
+    "Real commodity forecasting"
+  ],
+  "remote_repository_created": false,
+  "target_repository": "immanuelk1m/validate-time-series",
+  "default_publication_visibility": "private",
+  "source_archive_sha256": "6436b372cb17644aa0174e325cd4a2aa33b608dc6520e9e12a5a3d2b0a60e292",
+  "publication_execute_attempt": {
+    "status": "blocked_before_git_initialization",
+    "reason": "GitHub CLI is not installed or authenticated in this runtime.",
+    "observed_stderr": "STOPPED: Install gh before publishing. See docs/publish.md.",
+    "remote_created": false
+  },
+  "workflow_yaml_structure": "passed locally; hosted execution not performed"
+}

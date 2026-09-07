@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ts-validation:protocol:1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "benchmark_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "protocol_version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "phase": {
+      "enum": [
+        "development",
+        "final"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "frequency_label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "horizon_unit": {
+          "const": "observation_steps"
+        },
+        "data_evidence": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "name",
+        "unit",
+        "frequency_label",
+        "horizon_unit",
+        "data_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "series_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "horizons": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "seeds": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "split": {
+      "type": "object",
+      "properties": {
+        "window": {
+          "enum": [
+            "expanding",
+            "sliding"
+          ]
+        },
+        "min_train_size": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "max_train_size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 2
+        },
+        "stride": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "origin_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "origin_end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "target_end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "window",
+        "min_train_size",
+        "max_train_size",
+        "stride",
+        "origin_start",
+        "origin_end",
+        "target_end"
+      ],
+      "additionalProperties": false
+    },
+    "truth_as_of": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "enum": [
+            "mae",
+            "mse",
+            "rmse"
+          ]
+        },
+        "seasonal_period": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "direction_tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fold_origins": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "primary",
+        "seasonal_period",
+        "direction_tolerance",
+        "fold_origins"
+      ],
+      "additionalProperties": false
+    },
+    "tracks": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "information_set": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "learning_regime": {
+            "enum": [
+              "from_scratch",
+              "zero_shot",
+              "fine_tuned"
+            ]
+          },
+          "refit_policy": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "budget": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "point_functional": {
+            "enum": [
+              "mean",
+              "median",
+              "unspecified"
+            ]
+          },
+          "quantile_levels": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1
+            },
+            "uniqueItems": true
+          },
+          "pretraining_policy": {
+            "enum": [
+              "not_applicable",
+              "documented_disjoint",
+              "unknown_allowed"
+            ]
+          }
+        },
+        "required": [
+          "information_set",
+          "learning_regime",
+          "refit_policy",
+          "budget",
+          "point_functional",
+          "quantile_levels",
+          "pretraining_policy"
+        ],
+        "additionalProperties": false
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9-]*$"
+      }
+    },
+    "inference": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "assumptions_reviewed": {
+          "type": "boolean"
+        },
+        "hac_lags": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "min_origins": {
+          "type": "integer",
+          "minimum": 20
+        },
+        "alpha": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        }
+      },
+      "required": [
+        "enabled",
+        "assumptions_reviewed",
+        "hac_lags",
+        "min_origins",
+        "alpha"
+      ],
+      "additionalProperties": false
+    },
+    "regimes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "name",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "final_selection": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "model_spec_hashes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "approval_reference": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "locked_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "model_spec_hashes",
+            "approval_reference",
+            "locked_at"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "track_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "model_id",
+          "track_id"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "benchmark_id",
+    "protocol_version",
+    "phase",
+    "target",
+    "series_ids",
+    "horizons",
+    "seeds",
+    "split",
+    "truth_as_of",
+    "metrics",
+    "tracks",
+    "inference",
+    "regimes",
+    "final_selection",
+    "candidates"
+  ],
+  "additionalProperties": false
+}

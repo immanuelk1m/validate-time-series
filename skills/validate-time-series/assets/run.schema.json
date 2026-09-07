@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ts-validation:run:1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+    },
+    "protocol_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "data_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "track_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "model_spec": {
+      "type": "object",
+      "properties": {
+        "model_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+        },
+        "model_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "code_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "config": {
+          "type": "object"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "model_id",
+        "model_version",
+        "code_sha256",
+        "config",
+        "family"
+      ],
+      "additionalProperties": false
+    },
+    "forecast_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "reviewed",
+            "unreviewed"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "pretraining_overlap": {
+          "enum": [
+            "not_applicable",
+            "documented_disjoint",
+            "unknown",
+            "overlap"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "evidence",
+        "pretraining_overlap"
+      ],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "training_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "inference_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "hardware": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "training_seconds",
+        "inference_seconds",
+        "hardware"
+      ],
+      "additionalProperties": false
+    },
+    "comparison_to_naive": {
+      "enum": [
+        "non_nested",
+        "nested",
+        "not_assessed"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "protocol_sha256",
+    "data_sha256",
+    "track_id",
+    "model_spec",
+    "forecast_file",
+    "audit",
+    "runtime",
+    "comparison_to_naive"
+  ],
+  "additionalProperties": false
+}

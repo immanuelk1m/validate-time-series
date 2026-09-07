@@ -1,0 +1,28 @@
+{
+  "source_archive": "validate-time-series-v1.1.0-astra.zip",
+  "source_archive_sha256": "6436b372cb17644aa0174e325cd4a2aa33b608dc6520e9e12a5a3d2b0a60e292",
+  "source_profile": "v1.1.0-astra",
+  "imported_file_count": 19,
+  "imported_files_sha256": {
+    "skills/validate-time-series/assets/report-template.md": "6448a639f784ed583637842f8b09d15db7f8a138dc554f09ccd01a3b2c9a6df8",
+    "skills/validate-time-series/assets/protocol.example.json": "f451c4eb925b764c8978a6487ede84642250d768e3630f5b4f5e75e8ae999918",
+    "skills/validate-time-series/assets/protocol.schema.json": "3fe754c29076aaec85de03ede6114c3b9dcc8b6a8eb83a5fc8a57d41c1b598a3",
+    "skills/validate-time-series/assets/behavior-evals.json": "829c709c3d2920cb6b80c3bb400b222c222f5bc5e887dc58dc1ae2f6abe3809f",
+    "skills/validate-time-series/assets/run.schema.json": "668f3b2a96b2fa2c9cd902a43644418dc2a86db75c9034045d6bc3147c4c6429",
+    "skills/validate-time-series/agents/openai.yaml": "f8d63f945ffc0bd8ba19be89744b9b9cb78817bc46b93328b162f4d851200cc2",
+    "skills/validate-time-series/scripts/metrics.py": "c78c0f76f299a692d96cb5f0e1af76420484a8866c79e1213abbb7597a0d0f10",
+    "skills/validate-time-series/scripts/requirements.txt": "84875f7c49f1ef527e74b4e5deacc1816f57af3d1b4385f44478b52e0b0a34ff",
+    "skills/validate-time-series/scripts/test_validation.py": "2941fdde5b73e9e4ddfc6f6d07a97495a970c763641b9181eab9ad6e06decd02",
+    "skills/validate-time-series/scripts/tsvalidate.py": "d93964e387ddb29bb76d818cd2a275b87a25632367eca688b8b3b6d2560ed94f",
+    "skills/validate-time-series/scripts/demo.py": "bc0e131e3881a6a0058814fb15455078591fb00e9b5bce0c5187a0a762944023",
+    "skills/validate-time-series/SKILL.md": "a70e567770ab2f9485058255f0992384ddab59ccd5e382bf940db8c52ca0ce8f",
+    "skills/validate-time-series/references/astra-prompting.md": "5529ffe6a09d36fe1884046c654865fa8b92b3a19abbc1e44694b1fbaecfe691",
+    "skills/validate-time-series/references/leakage.md": "35d509e331ebad0d61c04a34dd17b8be994d6468a84c40df98c01d0690ab988d",
+    "skills/validate-time-series/references/adapters.md": "cb68f26c73caa9b29e3d7f563f33baabfb88a5ae83a84583e8092ecae98900b6",
+    "skills/validate-time-series/references/metrics-inference.md": "3f70ddc00144dbc217813359ed1aba26ec2ecbc980d6d9916659dd70b71f1637",
+    "skills/validate-time-series/references/protocol.md": "d84bc43efd001f612d79c28242fc564edc483468e381d6c4f4d05682c02c2206",
+    "skills/validate-time-series/references/runtime.md": "44df8cd8e3888967c97f6f8fe98999babd5fc601eef74a9cf926c01e3b1563d9",
+    "skills/validate-time-series/references/sources.md": "ce2a3a7a4d32886cdbc1aa8587e55a32f0166209fab8dcc75b06d377fda4d634"
+  },
+  "note": "Hashes describe the initial import, not future changes."
+}
