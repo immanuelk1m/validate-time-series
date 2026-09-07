@@ -72,6 +72,7 @@ $validate-time-series
 validate-time-series/
 ├── README.md
 ├── README.en.md
+├── LICENSE
 ├── AGENTS.md
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
@@ -102,26 +103,17 @@ validate-time-series/
 
 ARIMA·XGBoost·딥러닝·Foundation Model의 개별 학습 adapter는 아직 포함하지 않습니다. CRPS, Conformal 학습, MCS, SPA, Clark-West, Giacomini–White도 기본 실행 코드에 없습니다. 지침 제공과 실행 구현을 구분합니다.
 
-## 검증과 유지보수
+## 라이선스
 
-GitHub Actions에 Python 3.11·3.12·3.13의 단위 테스트, 저장소 검사, 합성 데이터 smoke test를 구성했습니다. CI 구성과 실제 원격 CI 통과는 다릅니다. 이번 로컬 검사 결과와 미검증 범위는 [verification.json](docs/verification.json)에 기록했습니다.
+이 프로젝트는 [MIT License](LICENSE)를 따릅니다.
 
-이 저장소는 첨부된 스킬의 모든 파일을 그대로 옮겼습니다. 원본 ZIP hash와 파일별 hash는 [import-provenance.json](docs/import-provenance.json)에 있습니다. Astra 참조 문서는 기존 패키지를 보존한 것이며, 이번 저장소 작업에서 모델의 API 설정을 다시 검증하지는 않았습니다.
+## 참고 문헌
 
-## GitHub에 최초 게시
+| 저자 | 연도 | 논문 | 학술지 |
+|---|---|---|---|
+| Hewamalage, H., Ackermann, K., Bergmeir, C. | 2023 | [Forecast evaluation for data scientists: common pitfalls and best practices](https://doi.org/10.1007/s10618-022-00894-5) | Data Mining and Knowledge Discovery, 37, 788–832 |
+| Qiu, X. et al. | 2024 | [TFB: Towards Comprehensive and Fair Benchmarking of Time Series Forecasting Methods](https://doi.org/10.14778/3665844.3665863) | PVLDB, 17(9) |
+| Bracher, J., Ray, E. L., Gneiting, T., Reich, N. G. | 2021 | [Evaluating epidemic forecasts in an interval format](https://doi.org/10.1371/journal.pcbi.1008618) | PLOS Computational Biology, 17(2), e1008618 |
+| Diebold, F. X., Mariano, R. S. | 1995 | [Comparing Predictive Accuracy](https://doi.org/10.1080/07350015.1995.10524599) | Journal of Business & Economic Statistics, 13(3), 253–263 |
 
-게시 도구는 `immanuelk1m/validate-time-series`를 **비공개**로 생성하도록 구성했습니다. 기본 실행은 계획 확인만 하며, 실제 게시에는 `--execute`가 필요합니다.
-
-```bash
-python3 tools/publish_github.py
-# GitHub CLI 로그인 및 Git 작성자 설정을 확인한 뒤 실행
-python3 tools/publish_github.py --execute
-```
-
-[최초 게시 안내](docs/publish.md)에 준비 사항과 실패 시 복구 절차가 있습니다. `--execute`는 새 저장소를 만들고 첫 커밋을 푸시하는 작업입니다. 이미 있는 저장소를 수정하거나 강제 푸시하지 않습니다.
-
-## 출처와 라이선스
-
-검증 방법론은 Hewamalage et al.의 *Forecast evaluation for data scientists: common pitfalls and best practices*와 Qiu et al.의 *TFB: Towards Comprehensive and Fair Benchmarking of Time Series Forecasting Methods*를 참고합니다. 논문별 반영 범위는 [sources.md](skills/validate-time-series/references/sources.md)에 있습니다.
-
-참고 저장소의 구성 방식을 조사했으며 코드·로고·스크린샷은 복제하지 않았습니다. 논문 PDF, 실제 원자재 데이터, 인증정보도 포함하지 않습니다. 프로젝트의 배포 라이선스는 아직 선택하지 않았으며 임의로 MIT·Apache 라이선스를 부여하지 않았습니다.
+논문별 반영 범위와 구현상의 구분은 [근거와 구현 범위](skills/validate-time-series/references/sources.md)에 정리했습니다. TFB는 2024년 출판 논문이며, 참고한 원문은 [arXiv v4 (2025)](https://arxiv.org/abs/2403.20150v4)입니다.

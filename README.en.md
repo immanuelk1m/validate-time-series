@@ -30,14 +30,17 @@ The single skill source is `skills/validate-time-series/`. The Codex plugin mani
 
 Individual ARIMA, XGBoost, deep-learning, or foundation-model training adapters; full hyperparameter search; distributed execution; CRPS; conformal training; MCS; SPA; Clark-West; or Giacomini–White implementation. Timestamp and hash checks do not certify arbitrary training code as leakage-free. `ELIGIBLE` means comparable under the recorded protocol, not deployment approval.
 
-## Repository checks and publication
+## License
 
-A GitHub Actions matrix is configured for Python 3.11, 3.12, and 3.13. Local execution and hosted CI are reported separately in [verification.json](docs/verification.json). Codex runtime activation and hosted GitHub Actions were not exercised during packaging.
+This project is licensed under the [MIT License](LICENSE).
 
-`python3 tools/publish_github.py` previews the initial publication. `--execute` requires authenticated GitHub CLI access and a configured Git identity; it creates **a private repository** at `immanuelk1m/validate-time-series` and pushes an initial commit. It refuses an existing Git checkout or existing remote repository and stages only the packaged file manifest. Read [publication instructions](docs/publish.md) before execution.
+## References
 
-## Provenance and license
+| Authors | Year | Paper | Journal |
+|---|---|---|---|
+| Hewamalage, H., Ackermann, K., Bergmeir, C. | 2023 | [Forecast evaluation for data scientists: common pitfalls and best practices](https://doi.org/10.1007/s10618-022-00894-5) | Data Mining and Knowledge Discovery, 37, 788–832 |
+| Qiu, X. et al. | 2024 | [TFB: Towards Comprehensive and Fair Benchmarking of Time Series Forecasting Methods](https://doi.org/10.14778/3665844.3665863) | PVLDB, 17(9) |
+| Bracher, J., Ray, E. L., Gneiting, T., Reich, N. G. | 2021 | [Evaluating epidemic forecasts in an interval format](https://doi.org/10.1371/journal.pcbi.1008618) | PLOS Computational Biology, 17(2), e1008618 |
+| Diebold, F. X., Mariano, R. S. | 1995 | [Comparing Predictive Accuracy](https://doi.org/10.1080/07350015.1995.10524599) | Journal of Business & Economic Statistics, 13(3), 253–263 |
 
-The imported skill is byte-for-byte preserved; [import-provenance.json](docs/import-provenance.json) records hashes. The existing Astra reference has not been revalidated against live API documentation during repository packaging. See [research sources](skills/validate-time-series/references/sources.md) and [repository references](docs/repository-notes.md).
-
-No project distribution license has been selected. No third-party logos, screenshots, source code, paper PDFs, private data, or credentials are included.
+See [research sources and implementation scope](skills/validate-time-series/references/sources.md) for how each paper informs this project. TFB was published in 2024; the consulted version is [arXiv v4 (2025)](https://arxiv.org/abs/2403.20150v4).
