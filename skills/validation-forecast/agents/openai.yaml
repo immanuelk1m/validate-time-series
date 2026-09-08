@@ -1,0 +1,4 @@
+interface:
+  display_name: "예측 후 검증"
+  short_description: "예측 원장·실행 로그를 사전 계획과 대조하고 결과를 검증"
+  default_prompt: "$validation-forecast로 이미 생성된 예측을 검증해줘. 동결 계획과 실제 TSCV·학습·전처리 로그를 대조하고 공통 평가기로 채점해. 결과를 보고 Fold·window·지표를 바꾸거나 모델을 새로 학습하지 마."

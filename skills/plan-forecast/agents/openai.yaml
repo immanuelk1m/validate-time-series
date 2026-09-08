@@ -1,0 +1,4 @@
+interface:
+  display_name: "예측 전 계획"
+  short_description: "TSCV 기간·Fold·학습 창과 평가 조건을 예측 전에 고정"
+  default_prompt: "$plan-forecast로 예측 실행 전 계획을 작성해줘. TSCV 기간·시계열별 Fold 수·expanding/sliding window·재학습·전처리·기준선·지표를 정하고 protocol과 Fold 일정을 고정해. 모델 실행이나 결과 채점은 하지 마."
