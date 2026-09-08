@@ -24,9 +24,9 @@ def demo(out: Path) -> None:
         when=iso(start+timedelta(weeks=i))
         random_walk += rng.gauss(0,1)
         for series,value in [('seasonal',100+0.08*i+5*math.sin(2*math.pi*i/13)+rng.gauss(0,0.3)),('random-walk',random_walk)]:
-            rows.append({'series_id':series,'timestamp':when,'available_at':when,'value':value})
+            rows.append({'series_id':series,'timestamp':when,'value':value})
     with (out/'data.csv').open('w',newline='',encoding='utf-8') as handle:
-        writer=csv.DictWriter(handle,fieldnames=['series_id','timestamp','available_at','value'])
+        writer=csv.DictWriter(handle,fieldnames=['series_id','timestamp','value'])
         writer.writeheader()
         writer.writerows(rows)
     protocol=read_json(ROOT/'assets/protocol.example.json')
