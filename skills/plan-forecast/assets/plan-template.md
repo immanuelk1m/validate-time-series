@@ -15,7 +15,7 @@
 | 각 Fold의 train/target 기간·관측 수 | fold_plan.csv | |
 | Expanding / Sliding, 최소·최대 학습 길이 | | |
 | Stride / horizon 목록·단위 | | |
-| Fit 주기 / 상태 갱신 정책 | | |
+| Refit 주기 | | |
 | 내부 튜닝 split / gap·purge / label 끝 | | |
 | 성능 보고 블록 크기·개수 | | |
 | 개발 / 최종 holdout 경계 | | |
@@ -25,6 +25,8 @@
 ## 모델과 평가 정책
 
 [전처리·feature/lag 선택 범위, 사전학습 중복 정책, 후보·seed·track·예산, 필수 naive와 계절 기준선, 주 지표·집계 가중치, 확률출력·통계검정·국면·실패 처리 기준을 정한다.]
+
+Calibration residual pool은 별도 계획값을 받지 않는다. 사용 시 horizon별로 분리하며 H1 오차와 H4 오차를 같은 pool에 섞지 않는다.
 
 ## 실행자 인계
 
