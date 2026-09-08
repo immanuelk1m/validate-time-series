@@ -8,17 +8,19 @@
 | TSCV | 방식, 평가 기간, 시계열별 Fold 수와 분할 일정 | 실제 TSCV 실행 여부, Fold 수·기간·관측 수 일치 |
 | Window | expanding/sliding 선택, 최소·최대 학습 길이 | 각 origin의 실제 학습 범위와 창 이동 일치 |
 | Stride·horizon | 예측 간격과 horizon 목록, 최대 target 경계 | 요청한 모든 origin/horizon의 정렬과 누락 |
-| 재학습 | fit 주기, state update와 재사용 규칙 | fit 로그·모델 상태·입력 갱신 기록 |
+| 재학습 | fit 주기 | 실제 refit 시점과 fit 로그 |
 | 내부 튜닝 | 내부 시간순 split·gap/purge·trial 예산 | trial·label·early stopping 구간의 실제 경계 |
-| 전처리 | scaler·imputer·변수/lag 선택·분해의 fit 정책 | 실제 fit 데이터, 코드 경로와 상태 hash |
+| 전처리 | imputer·변수/lag 선택·분해의 fit 정책 | scaler를 포함한 실제 전처리 fit 데이터, 코드 경로와 hash |
 | 입력·사전학습 | 외생변수 정책, checkpoint·중복 정책 | 미래 실측값 유입, 학습 데이터 중복 증빙 |
 | 기준선 | Naive 필수 등록, drift/계절 기준선·period 선택 | 같은 OOS 표본의 기준선 성능과 제출 상태 |
 | 지표 | 주 지표·mean/median·집계 가중치·방향 정의 | 정의대로 계산했는지, 개선 폭·편향·미정의 분모 |
-| 확률예측 | quantile grid, 보정 구간·방법 | crossing, pinball·coverage·width·interval score·WIS |
+| 확률예측 | quantile grid, 보정 방법 | crossing, pinball·coverage·width·interval score·WIS와 horizon별 calibration 준수 |
 | 통계검정 | 활성화 여부, 비교 가정, HAC lag, family | 표본·의존성·가정 충족, 검정 보류, CI·Holm 해석 |
 | 안정성 | horizon·seed·국면·보고 블록 정의 | 해당 구간의 성능·최악 구간·표본 수 |
 | 비용·실패 | 후보·seed·계산 예산·누락 처리 정책 | 실제 비용·실패·미제출·표본 coverage |
 | 최종 평가 | 미사용 구간, 모델 명세·가중치·승인 동결 | test 재선택 여부, 승인 명세와 실제 실행 일치 |
+
+Calibration residual pool의 horizon 구분은 계획값이 아니라 고정 규칙이다. H1 residual은 H1 보정에만, H4 residual은 H4 보정에만 사용하며 서로 다른 horizon의 residual을 섞지 않는다.
 
 ## Fold의 의미
 
