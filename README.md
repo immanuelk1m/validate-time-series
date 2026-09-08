@@ -22,13 +22,13 @@ The demo uses synthetic data, with no GPU, model downloads, or paid API calls. C
 
 ## Included
 
-As-of observation selection; rolling-origin evaluation; naive, drift, and seasonal-naive baselines; point metrics; submitted-quantile scoring; opt-in DM-style HAC diagnostics; matched-sample, within-track leaderboards; retained failures; and provenance hashes.
+Rolling-origin evaluation; naive, drift, and seasonal-naive baselines; point metrics; submitted-quantile scoring; opt-in DM-style HAC diagnostics; matched-sample, within-track leaderboards; retained failures; leakage cutoff checks; and provenance hashes.
 
 The single skill source is `skills/validate-time-series/`. The Codex plugin manifest references this directory. For local installation, link that directory under `$HOME/.agents/skills` without replacing an existing installation; see the Korean README for a guarded command. Invoke `$validate-time-series` in Codex.
 
 ## Not included
 
-Individual ARIMA, XGBoost, deep-learning, or foundation-model training adapters; full hyperparameter search; distributed execution; CRPS; conformal training; MCS; SPA; Clark-West; or Giacomini–White implementation. Timestamp and hash checks do not certify arbitrary training code as leakage-free. `ELIGIBLE` means comparable under the recorded protocol, not deployment approval.
+Individual ARIMA, XGBoost, deep-learning, or foundation-model training adapters; full hyperparameter search; distributed execution; point-in-time availability or data-vintage validation; CRPS; conformal training; MCS; SPA; Clark-West; or Giacomini–White implementation. Output cutoff and hash checks do not certify arbitrary training code as leakage-free. `ELIGIBLE` means comparable under the recorded protocol, not deployment approval.
 
 ## License
 
