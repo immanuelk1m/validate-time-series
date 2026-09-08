@@ -12,7 +12,6 @@
 | 학습 표본 | 입력 cutoff와 label의 마지막 관측 시각 | t에서 H8 학습 label에 t 이후 값을 포함 |
 | 전처리 | fit 구간, 역변환, 인덱스 유지 | 전체 구간 평균으로 scaler fit, 양방향 보간, centered rolling |
 | Feature | feature 선택·lag 선택·분해의 fit 범위 | test 상관계수로 외생변수 선택 |
-| 전역 모델 | 모든 시계열의 calendar cutoff | 한 자산의 미래 위기 구간을 다른 자산의 과거 예측에 사용 |
 | Calibration | calibration 예측이 OOS인지와 오차 실현 시각 | H8 결과가 아직 나오지 않았는데 잔차 pool에 포함 |
 | 튜닝 | early stopping과 trial 선택에 쓰인 구간 | trial별 test RMSE를 보고 최적 설정 선택 |
 | 평가 loader | 예상 키 전체, 마지막 batch 포함 | test `drop_last=True`, 실패 origin 삭제 |
@@ -24,8 +23,6 @@
 과거 관측값, origin에 이미 알려진 미래 변수, 아직 모르는 미래 변수를 구분한다. 달력·사전에 확정한 행사 일정은 알려진 미래 입력일 수 있다. 공급량·재고·환율의 실제 미래값은 일반적으로 그렇지 않다. 미래 외생변수가 필요하면 origin 이전 데이터로 별도 예측하고 그 예측 과정도 검증한다.
 
 참고가격, 만기, 계약 롤오버, 뉴스 timestamp, 달력 집계의 기준을 남긴다. 동봉 스크립트는 외생변수 panel을 자동 생성하지 않는다.
-
-인과발견으로 변수를 선택하는 별도 요청이 있을 때는 사용자 지정 Tigramite를 사용하되 그래프·부모 집합·lag도 해당 학습 Fold 안에서만 추정한다. 예측 성능 개선은 causal effect 식별의 검증 결과가 아니다.
 
 ## 사전학습 모델
 
