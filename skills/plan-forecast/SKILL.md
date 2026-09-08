@@ -46,7 +46,7 @@ Expanding은 시작점을 유지하고 학습 관측을 늘린다. Sliding은 �
 
 ## 3. 전처리·모델·평가 규칙
 
-Scaler, imputer, feature/lag 선택, 분해와 그래프 추정의 fit 범위를 학습 Fold로 제한한다. Multi-horizon label 경계, global 모델의 시계열 간 시간 경계, 외생변수의 실제 미래값 사용 금지, OOS calibration 잔차 사용 규칙을 정한다. 이 단계에서는 규칙을 설계하며 실제 준수 판정은 예측 후에 한다. 인과발견으로 변수를 선택하는 별도 요청에는 Tigramite를 사용하고 그래프도 학습 Fold 안에서 추정하도록 설계한다.
+Scaler, imputer, feature/lag 선택과 분해의 fit 범위를 학습 Fold로 제한한다. Multi-horizon label 경계, 외생변수의 실제 미래값 사용 금지, OOS calibration 잔차 사용 규칙을 정한다. 이 단계에서는 규칙을 설계하며 실제 준수 판정은 예측 후에 한다.
 
 Naive를 필수 비교 기준선으로 등록하고 drift와 seasonal naive의 필요성·계절 주기를 정한다. 후보 모델, 모든 seed, 정보 집합, 재학습 조건, 예산, mean/median 목표와 quantile grid를 사전 등록한다. 모델 계열만 다르다는 이유로 track을 나누지 않는다. Zero-shot과 fine-tuning처럼 비교 조건이 다르면 나눈다.
 
