@@ -23,11 +23,11 @@ TFB는 data, method, evaluation, reporting 계층을 분리하고 universal inte
 | 단위 | 정규화나 차분을 사용했으면 원래 목표 단위로 역변환한다. |
 | Cutoff | 학습·전처리 cutoff가 forecast origin을 넘지 않는다. |
 | Seed | 미리 지정한 seed를 모두 실행한다. 불가능하면 제한을 남긴다. |
-| 학습 상태 | 최초 fit, 정기 재학습, state update를 구분한다. |
+| 재학습 | 실제 refit 시점과 적용한 refit 정책을 기록한다. |
 | 확률 출력 | 요청한 quantile grid, 유한값과 단조성이 맞는다. |
 | 실패 | OOM, timeout, 비수렴, 미지원 horizon을 숨기지 않는다. |
 
-순수 함수가 아닌 상태 보유 모델은 Fold/series 경계에서 상태가 잘못 재사용되는지 검사한다. 재귀 다중 단계와 direct multi-step은 구현 방식으로 명시한다. 평가 시점·정답은 같게 유지하되 한 방법을 다른 방법으로 바꾸었다고 가장하지 않는다. [P1 §3.1.2; P2 §4.4]
+Fold/series 경계에서 이전 실행의 내부 값이 잘못 재사용되는지 검사한다. 재귀 다중 단계와 direct multi-step은 구현 방식으로 명시한다. 평가 시점·정답은 같게 유지하되 한 방법을 다른 방법으로 바꾸었다고 가장하지 않는다. [P1 §3.1.2; P2 §4.4]
 
 ## 모델 실행 범위
 

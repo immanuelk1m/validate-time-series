@@ -31,7 +31,7 @@ description: "Plan time-series forecasting BEFORE model execution. Choose and fr
 | Fold 수 | 시계열별 실제 rolling Fold 수, 각 Fold의 train/target 시작·끝과 관측 수 |
 | 학습 창 | expanding 또는 sliding, 최소 학습 길이, sliding의 최대 길이 |
 | 예측 간격 | stride, horizon 목록과 단위, 겹치는 target 처리 |
-| 재학습 | 매 origin 학습, 주기적 재학습, 최초 fit 후 상태 갱신 중 선택 |
+| 재학습 | 매 origin 학습 또는 주기적 재학습의 fit 주기 |
 | 내부 튜닝 | 내부 시간순 split, trial 예산, early stopping 구간, 바깥 평가와 분리 |
 | Gap·purge | label 끝이 학습 경계를 넘지 않도록 필요한 구간과 근거 |
 | 최종 평가 | 개발 구간과 final holdout 경계, 최종 모델 명세와 승인 방식 |
@@ -46,7 +46,9 @@ Expanding은 시작점을 유지하고 학습 관측을 늘린다. Sliding은 �
 
 ## 3. 전처리·모델·평가 규칙
 
-Scaler, imputer, feature/lag 선택과 분해의 fit 범위를 학습 Fold로 제한한다. Multi-horizon label 경계, 외생변수의 실제 미래값 사용 금지, OOS calibration 잔차 사용 규칙을 정한다. 이 단계에서는 규칙을 설계하며 실제 준수 판정은 예측 후에 한다.
+Imputer, feature/lag 선택과 분해의 fit 범위를 학습 Fold로 제한한다. Multi-horizon label 경계와 외생변수의 실제 미래값 사용 금지 규칙을 정한다. 이 단계에서는 규칙을 설계하며 실제 준수 판정은 예측 후에 한다.
+
+Calibration 잔차는 사용자 선택 항목으로 두지 않는다. Calibration을 사용하는 경우 residual pool은 **horizon별로 분리**하는 공통 고정 규칙을 따른다. 예를 들어 H1 오차는 H1 보정에만, H4 오차는 H4 보정에만 사용한다.
 
 Naive를 필수 비교 기준선으로 등록하고 drift와 seasonal naive의 필요성·계절 주기를 정한다. 후보 모델, 모든 seed, 정보 집합, 재학습 조건, 예산, mean/median 목표와 quantile grid를 사전 등록한다. 모델 계열만 다르다는 이유로 track을 나누지 않는다. Zero-shot과 fine-tuning처럼 비교 조건이 다르면 나눈다.
 

@@ -30,17 +30,20 @@ description: "Audit and score time-series forecasts AFTER model execution agains
 | 검토 항목 | 확인할 실제 증빙 |
 |---|---|
 | TSCV 실행 | 실제 origin/Fold 로그, 시계열별 Fold 수, train/target 기간과 관측 수 |
-| 학습 창·재학습 | expanding/sliding 적용, 창 길이, fit·state update 시점과 저장된 학습 상태 |
+| 학습 창·재학습 | expanding/sliding 적용, 창 길이, 실제 refit 시점과 fit 로그 |
 | 분할·튜닝 | stride·horizon·gap·purge·내부 split, HPO trial·early stopping·holdout 사용 기록 |
 | 학습·전처리 누수 | scaler·imputer·feature/lag 선택·분해의 실제 fit 구간 |
 | Label·외생변수 | multi-horizon label 경계, 미래 가격·수급 실제값 유입 |
-| Calibration·선택 | OOS 잔차와 실현 horizon, ensemble 가중치·임계값 선택에 final test를 썼는지 |
+| Calibration | horizon별 OOS 잔차 pool, 잔차 실현 시점, 서로 다른 horizon 잔차 혼합 여부 |
+| 선택 | ensemble 가중치·임계값 선택에 final test를 썼는지 |
 | 사전학습 | checkpoint·중복 정책과 증빙, unknown을 clean zero-shot으로 바꿨는지 |
 | 표본·실패·예산 | 모든 series×origin×horizon×seed, 실패/미제출, 재학습·계산 예산 로그 |
 
+Calibration residual pool은 **horizon별로 분리**한다. H1 오차는 H1 보정에만, H4 오차는 H4 보정에만 사용한다. 서로 다른 horizon의 오차를 하나의 pool에 섞으면 계획 선택의 문제가 아니라 고정 규칙 위반으로 `FAIL` 처리한다.
+
 예측 행이 모두 있다는 사실만으로 **TSCV를 실제로 실행했다거나 매 Fold 재학습했다고 판정하지 않는다.** 학습 로그가 없으면 해당 항목은 `UNKNOWN`이다. `metrics.fold_origins`로 만든 성능 보고 블록도 실제 TSCV 실행 증거가 아니다.
 
-cutoff 필드는 선언값이다. 코드 경로와 로그를 확인해야 전처리 감사를 `reviewed`로 기록할 수 있다. 필요한 경우 미래 관측값만 바꾸는 회귀 실험으로 과거 입력·상태·예측의 불변성을 검사한다. 이런 진단 재실행은 사용자 요청 범위 안에서만 수행하고 원래 평가 결과와 구분한다.
+cutoff 필드는 선언값이다. 코드 경로와 로그를 확인해야 전처리 감사를 `reviewed`로 기록할 수 있다. 필요한 경우 미래 관측값만 바꾸는 회귀 실험으로 과거 입력과 예측의 불변성을 검사한다. 이런 진단 재실행은 사용자 요청 범위 안에서만 수행하고 원래 평가 결과와 구분한다.
 
 ## 3. 고정된 조건으로 채점
 
@@ -58,7 +61,7 @@ quantile grid·교차 여부를 확인하고 pinball, coverage, width, interval 
 
 통계검정은 protocol에서 활성화하고 가정을 검토한 경우에만 실행한다. DM-HAC는 비중첩 비교의 대표본 진단이며 nested 비교나 작은 표본에 일괄 적용하지 않는다. 겹친 horizon과 seed를 독립 표본으로 늘리지 않는다. 평균 손실 차이 CI와 예측구간을 구별하고 사전 family에 Holm 보정을 적용한다. 비유의 결과는 동등성 증명이 아니다.
 
-CRPS, conformal 학습, MCS/SPA, Clark-West, Giacomini–White는 동봉 구현이 아니다. Conformal을 외부에서 썼다면 보정 잔차의 시간 경계와 distribution shift를 감사한다. 지원되지 않은 기능을 실행했다고 보고하지 않는다.
+CRPS, conformal 학습, MCS/SPA, Clark-West, Giacomini–White는 동봉 구현이 아니다. Conformal을 외부에서 썼다면 보정 잔차의 시간 경계와 distribution shift를 감사하고, residual pool이 horizon별로 분리됐는지 확인한다. 지원되지 않은 기능을 실행했다고 보고하지 않는다.
 
 ## 5. 판정과 보고
 

@@ -12,7 +12,7 @@
 | 학습 표본 | 입력 cutoff와 label의 마지막 관측 시각 | t에서 H8 학습 label에 t 이후 값을 포함 |
 | 전처리 | fit 구간, 역변환, 인덱스 유지 | 전체 구간 평균으로 scaler fit, 양방향 보간, centered rolling |
 | Feature | feature 선택·lag 선택·분해의 fit 범위 | test 상관계수로 외생변수 선택 |
-| Calibration | calibration 예측이 OOS인지와 오차 실현 시각 | H8 결과가 아직 나오지 않았는데 잔차 pool에 포함 |
+| Calibration | horizon별 OOS 잔차와 오차 실현 시각 | H1과 H4 잔차를 같은 pool에 혼합하거나 아직 실현되지 않은 잔차 사용 |
 | 튜닝 | early stopping과 trial 선택에 쓰인 구간 | trial별 test RMSE를 보고 최적 설정 선택 |
 | 평가 loader | 예상 키 전체, 마지막 batch 포함 | test `drop_last=True`, 실패 origin 삭제 |
 
@@ -23,6 +23,12 @@
 과거 관측값, origin에 이미 알려진 미래 변수, 아직 모르는 미래 변수를 구분한다. 달력·사전에 확정한 행사 일정은 알려진 미래 입력일 수 있다. 공급량·재고·환율의 실제 미래값은 일반적으로 그렇지 않다. 미래 외생변수가 필요하면 origin 이전 데이터로 별도 예측하고 그 예측 과정도 검증한다.
 
 참고가격, 만기, 계약 롤오버, 뉴스 timestamp, 달력 집계의 기준을 남긴다. 동봉 스크립트는 외생변수 panel을 자동 생성하지 않는다.
+
+## Calibration 잔차
+
+Calibration residual pool은 horizon별로 분리한다. H1 오차는 H1 보정에만, H4 오차는 H4 보정에만 사용한다. 서로 다른 horizon의 잔차를 합쳐 표본 수를 늘리지 않는다. 각 잔차는 해당 horizon의 실제값이 관측된 뒤에만 보정 자료에 들어갈 수 있다.
+
+이 규칙은 plan-forecast에서 선택하는 하이퍼파라미터가 아니라 공통 검증 규칙이다. 외부 calibration 구현을 사용했다면 horizon별 residual ledger나 이에 준하는 실행 증빙을 확인한다.
 
 ## 사전학습 모델
 
