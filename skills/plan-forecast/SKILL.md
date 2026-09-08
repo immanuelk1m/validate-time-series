@@ -13,7 +13,7 @@ description: "Plan time-series forecasting BEFORE model execution. Choose and fr
 
 계획만 요청받았다면 모델 학습, baseline 예측 생성, HPO, 점수 계산이나 리더보드 작성을 시작하지 않는다. 실행과 검증까지 명시적으로 요청받았다면 계획 동결 → 별도 모델 실행 → validation-forecast 순서로 진행한다. 단계별 완료 상태를 구분한다.
 
-데이터 이용 가능 시점과 Vintage 검증은 제외된 범위다. 발표·수정 이력 메타데이터를 요구하거나 해당 정보 부재를 차단 사유로 삼지 않는다. 시간순 분할과 학습·전처리 누수 방지 규칙은 유지한다.
+시간순 분할과 학습·전처리 누수 방지 규칙은 유지한다.
 
 ## 1. 목표와 비교 조건
 
