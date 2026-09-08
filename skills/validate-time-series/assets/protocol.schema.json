@@ -134,10 +134,6 @@
       ],
       "additionalProperties": false
     },
-    "truth_as_of": {
-      "type": "string",
-      "format": "date-time"
-    },
     "metrics": {
       "type": "object",
       "properties": {
@@ -365,7 +361,6 @@
     "horizons",
     "seeds",
     "split",
-    "truth_as_of",
     "metrics",
     "tracks",
     "inference",
