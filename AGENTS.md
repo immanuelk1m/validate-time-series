@@ -4,7 +4,7 @@ The canonical skill is `skills/validate-time-series/`. Read its `SKILL.md` and t
 
 Reuse the existing evaluator, standard library, and installed dependencies. Add only the code needed for the task. Keep validation, error handling, privacy boundaries, and numerical correctness even when simplifying code. This maintenance approach follows the user's Ponytail preference; the reference is recorded in `docs/repository-notes.md`.
 
-Preserve protocol locking, point-in-time availability, complete evaluation keys, matched naive comparison, failure retention, and separate final evaluation. Do not invent observations, scores, execution results, or implementation support. Agent model configuration and forecast-model candidates are different concerns.
+Preserve protocol locking, chronological train/test boundaries, complete evaluation keys, matched naive comparison, failure retention, and separate final evaluation. Do not invent observations, scores, execution results, or implementation support. Agent model configuration and forecast-model candidates are different concerns.
 
 Run a focused check for the change. For numerical or shared pipeline changes, run `python skills/validate-time-series/scripts/test_validation.py`. For repository metadata and publication changes, run `python tools/test_repository.py`. Use a new output path for a smoke demo. Never send private data to CI.
 
