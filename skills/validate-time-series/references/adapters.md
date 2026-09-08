@@ -2,13 +2,13 @@
 
 ## 기존 실행기를 먼저 확인한다
 
-TFB는 data, method, evaluation, reporting 계층을 분리하고 universal interface로 외부 구현을 연결한다. 새로운 모델 때문에 공통 평가 코드를 모델 저장소 안에 복제하지 않는다. 기존 TFB·fev·자체 backtester가 있다면 입력 snapshot과 예측 원장 형식을 맞춘다. [P2 §4.4, Fig. 7]
+TFB는 data, method, evaluation, reporting 계층을 분리하고 universal interface로 외부 구현을 연결한다. 새로운 모델 때문에 공통 평가 코드를 모델 저장소 안에 복제하지 않는다. 기존 TFB·fev·자체 backtester가 있다면 입력 데이터와 예측 원장 형식을 맞춘다. [P2 §4.4, Fig. 7]
 
 이 패키지는 TFB/fev를 내장하거나 해당 라이브러리의 특정 버전 API를 구현하지 않는다. 설치된 버전의 공식 API를 읽고 adapter를 작성한다. 평가 split, 표본 수, 역변환과 점수는 이 스킬의 잠긴 명세에 맞는지 다시 확인한다.
 
 ## Adapter 계약
 
-학습 요청에는 origin까지 허용된 학습 입력·label·fit cutoff와 model config/seed를 전달한다. 예측 요청에는 origin, horizon/target timestamp, 사용 가능한 context, 명시적으로 알려진 미래 변수만 전달한다. `expected.jsonl`, test 정답과 아직 발표되지 않은 외생변수는 전달하지 않는다.
+학습 요청에는 origin까지의 학습 입력·label·fit cutoff와 model config/seed를 전달한다. 예측 요청에는 origin, horizon/target timestamp, context, 명시적으로 알려진 미래 변수만 전달한다. `expected.jsonl`, test 정답과 아직 알 수 없는 미래 외생변수는 전달하지 않는다.
 
 반환값은 원래 목표 단위의 point 예측과, 지원하는 경우 명세에 맞는 quantile dict이다. 별도 mean/median 출력을 지원하는 모델은 track의 point functional에 맞춰 선택한다. 지원하지 않는 예측구간을 임의로 생성하지 않는다.
 
@@ -21,7 +21,7 @@ TFB는 data, method, evaluation, reporting 계층을 분리하고 universal inte
 | Shape | 요청한 모든 series/origin/horizon/seed에 한 행씩 대응한다. |
 | 정렬 | horizon과 target timestamp가 명세의 달력 격자와 맞는다. |
 | 단위 | 정규화나 차분을 사용했으면 원래 목표 단위로 역변환한다. |
-| 시간 | 사용한 입력·label·전처리의 availability 상한을 기록한다. |
+| Cutoff | 학습·전처리 cutoff가 forecast origin을 넘지 않는다. |
 | Seed | 미리 지정한 seed를 모두 실행한다. 불가능하면 제한을 남긴다. |
 | 학습 상태 | 최초 fit, 정기 재학습, state update를 구분한다. |
 | 확률 출력 | 요청한 quantile grid, 유한값과 단조성이 맞는다. |
