@@ -10,8 +10,8 @@
 | Stride·horizon | 예측 간격과 horizon 목록, 최대 target 경계 | 요청한 모든 origin/horizon의 정렬과 누락 |
 | 재학습 | fit 주기, state update와 재사용 규칙 | fit 로그·모델 상태·입력 갱신 기록 |
 | 내부 튜닝 | 내부 시간순 split·gap/purge·trial 예산 | trial·label·early stopping 구간의 실제 경계 |
-| 전처리 | scaler·imputer·변수/lag 선택·분해·그래프의 fit 정책 | 실제 fit 데이터, 코드 경로와 상태 hash |
-| 입력·사전학습 | 외생변수·전역 모델 경계, checkpoint·중복 정책 | 미래 실측값 유입, 학습 데이터 중복 증빙 |
+| 전처리 | scaler·imputer·변수/lag 선택·분해의 fit 정책 | 실제 fit 데이터, 코드 경로와 상태 hash |
+| 입력·사전학습 | 외생변수 정책, checkpoint·중복 정책 | 미래 실측값 유입, 학습 데이터 중복 증빙 |
 | 기준선 | Naive 필수 등록, drift/계절 기준선·period 선택 | 같은 OOS 표본의 기준선 성능과 제출 상태 |
 | 지표 | 주 지표·mean/median·집계 가중치·방향 정의 | 정의대로 계산했는지, 개선 폭·편향·미정의 분모 |
 | 확률예측 | quantile grid, 보정 구간·방법 | crossing, pinball·coverage·width·interval score·WIS |
