@@ -1,5 +1,13 @@
 # 변경 기록
 
+## 2.0.0 (미출시) — 2026-09-08
+
+통합 스킬을 `plan-forecast`와 `validation-forecast`로 나눴습니다. 전자는 예측 전에 TSCV 기간·Fold·window·평가 정책을 결정하고, 후자는 기존 실행 로그와 예측 원장을 계획과 대조합니다.
+
+계획 전용 실행기는 Fold 일정과 요약을 만들며 요청 Fold 수 불일치를 검사합니다. 검증 전용 실행기는 기존 lock과 예측만 채점합니다. 공통 evaluator·schema는 validation-forecast로 이동했으며 점수 계산 로직은 그대로입니다. 두 스킬을 같은 checkout에서 함께 설치해야 합니다. 이전 `$validate-time-series` 호출과 설치 경로는 새 이름으로 전환합니다.
+
+데이터 이용 가능 시점과 Vintage 검증 제거는 유지합니다. Python 회귀 테스트, 모드별 인계 테스트와 CI의 테스트된 소스 묶음을 추가·갱신했습니다. 실제 호스트의 스킬 호출 시험과 코드 테스트를 구분합니다.
+
 ## 저장소 배포 구성 — 2026-09-07
 
 기존 `v1.1.0-astra` 스킬을 `skills/validate-time-series/`로 옮겼습니다. 스킬 지침·참조 문서·schema·Python 실행기는 원본 바이트를 유지합니다.

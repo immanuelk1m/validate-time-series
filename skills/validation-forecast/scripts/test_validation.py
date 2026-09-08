@@ -359,7 +359,7 @@ class SkillPackageTests(unittest.TestCase):
         fields={m.group(1):v.loads(m.group(2)) for m in re.finditer(r'^  ([a-z_]+): (.+)$',text,re.MULTILINE)}
         self.assertEqual(set(fields),{'display_name','short_description','default_prompt'})
         self.assertTrue(25<=len(fields['short_description'])<=64)
-        self.assertIn('$validate-time-series',fields['default_prompt'])
+        self.assertIn('$validation-forecast',fields['default_prompt'])
 
     def test_resource_links_resolve(self):
         text=(v.ROOT/'SKILL.md').read_text(encoding='utf-8')

@@ -6,6 +6,10 @@
 
 [어떤 목표·단위·horizon에서 무엇을 검증했는지, 어떤 근거가 부족한지 적는다. ELIGIBLE과 배포 승인을 구분한다.]
 
+## 계획 준수
+
+[compliance-template.csv의 item·planned·observed·evidence·status를 채운다. 사전 계획이 없으면 RETROSPECTIVE, 증빙이 부족하면 UNKNOWN이다. 실제 TSCV Fold 수·기간·window·fit 로그를 대조한다. 자동 원장 검사 ELIGIBLE과 수동 계획 감사 PASS를 구분하고 중요한 위반/미확인을 전체 판정에 반영한다.]
+
 ## 데이터와 비교 조건
 
 | 항목 | 확인값 |
@@ -14,6 +18,7 @@
 | Dataset SHA-256 | |
 | 목표·단위·horizon 단위·시간대 | |
 | Origin 범위·stride·horizon·학습 길이 | |
+| 계획/실제 rolling Fold 수·기간 / 별도 보고 블록 수 | |
 | Split·전처리·feature 선택·재학습 정책 | |
 | Track별 정보 집합·예산·학습 방식 | |
 | 후보·seed·주 지표·집계 규칙 | |

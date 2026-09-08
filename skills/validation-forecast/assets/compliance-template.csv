@@ -1,0 +1,14 @@
+item,planned,observed,evidence,status
+tscv_execution,,,,UNKNOWN
+rolling_fold_count_and_periods,,,,UNKNOWN
+window_and_training_ranges,,,,UNKNOWN
+refit_and_state_updates,,,,UNKNOWN
+horizons_stride_and_evaluation_keys,,,,UNKNOWN
+inner_tuning_label_gap_and_purge,,,,UNKNOWN
+preprocessing_feature_selection,,,,UNKNOWN
+exogenous_and_cross_series_boundaries,,,,UNKNOWN
+calibration_and_test_selection,,,,UNKNOWN
+pretraining_policy,,,,UNKNOWN
+baselines_seeds_failures_and_budget,,,,UNKNOWN
+protocol_metrics_and_aggregation,,,,UNKNOWN
+final_holdout_and_model_spec,,,,UNKNOWN

@@ -14,19 +14,21 @@ from unittest.mock import patch
 import publish_github as publisher
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "validate-time-series"
+SKILL = ROOT / "skills" / "validation-forecast"
 
 
 class RepositoryTests(unittest.TestCase):
-    def test_single_skill_source(self):
-        self.assertEqual(list((ROOT / "skills").rglob("SKILL.md")), [SKILL / "SKILL.md"])
+    def test_two_skill_sources(self):
+        self.assertEqual(set((ROOT / "skills").rglob("SKILL.md")),
+                         {SKILL / "SKILL.md", ROOT / "skills/plan-forecast/SKILL.md"})
+        self.assertFalse((ROOT / "skills/validate-time-series").exists())
         self.assertFalse((ROOT / "SKILL.md").exists())
 
     def test_plugin_points_to_skill(self):
         manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
         self.assertEqual(manifest["skills"], "./skills/")
         self.assertEqual(manifest["name"], "validate-time-series")
-        self.assertEqual(manifest["version"], "1.1.0")
+        self.assertEqual(manifest["version"], "2.0.0")
         self.assertNotIn("license", manifest)
 
     def test_marketplace_local_source(self):
@@ -53,7 +55,8 @@ class RepositoryTests(unittest.TestCase):
     def test_original_import_metadata_complete(self):
         provenance = json.loads((ROOT / "docs/import-provenance.json").read_text())
         for name, expected in provenance["imported_files_sha256"].items():
-            self.assertTrue((ROOT / name).is_file(), name)
+            current = name.replace("skills/validate-time-series/", "skills/validation-forecast/")
+            self.assertTrue((ROOT / current).is_file(), current)
             self.assertRegex(expected, r"^[0-9a-f]{64}$")
 
     def test_packaged_allowlist_has_required_files(self):

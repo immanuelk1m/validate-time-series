@@ -1,6 +1,6 @@
 {
   "name": "validate-time-series",
-  "version": "1.1.0",
-  "description": "Locked-protocol time-series forecast validation with rolling evaluation, baselines, and traceable leaderboards.",
+  "version": "2.0.0",
+  "description": "Two forecast skills: plan-forecast locks the design before execution; validation-forecast audits and scores existing results.",
   "skills": "./skills/"
 }
