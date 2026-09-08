@@ -24,7 +24,6 @@ Astra에는 역할 설명보다 **완료할 일, 지켜야 할 경계, 성공 �
 질문은 다음 중 하나에 해당할 때만 한다.
 
 - 목표 변수나 horizon이 여러 후보 사이에서 갈리고 선택에 따라 결과가 달라진다.
-- 발표시각·vintage처럼 추정하면 real-time 검증의 의미가 바뀐다.
 - 새로운 유료 API/GPU 사용처럼 사용자가 정하지 않은 비용 결정이 필요하다.
 - 비가역적 외부 변경이나 보호된 final holdout 접근처럼 별도 권한이 필요하다.
 
@@ -54,7 +53,7 @@ Astra에는 역할 설명보다 **완료할 일, 지켜야 할 경계, 성공 �
 
 ## 병렬 작업
 
-harness가 subagent를 지원하고 서로 독립적인 작업이 있으면 병렬화한다. 예를 들면 모델 adapter 조사, 데이터 availability 감사, 기존 benchmark 코드 확인은 나눌 수 있다. protocol 정의, 공통 metric과 최종 eligibility 판정은 한 기준으로 합친다.
+harness가 subagent를 지원하고 서로 독립적인 작업이 있으면 병렬화한다. 예를 들면 모델 adapter 조사, split 감사, 기존 benchmark 코드 확인은 나눌 수 있다. protocol 정의, 공통 metric과 최종 eligibility 판정은 한 기준으로 합친다.
 
 작은 작업을 억지로 나누거나 동일 파일을 여러 agent가 동시에 수정하게 하지 않는다.
 
