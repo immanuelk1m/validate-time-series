@@ -34,7 +34,6 @@
     "origin_end": "2023-12-10T00:00:00Z",
     "target_end": "2024-03-17T00:00:00Z"
   },
-  "truth_as_of": "2025-01-01T00:00:00Z",
   "metrics": {
     "primary": "mae",
     "seasonal_period": 13,
