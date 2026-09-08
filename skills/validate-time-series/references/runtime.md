@@ -28,15 +28,15 @@ python3 -m venv .venv
   --protocol ./protocol.json --data ./target.csv --out ./runs/v1/plan
 ```
 
-데이터는 다음 네 컬럼만 사용한다. 같은 관측의 수정본은 늦은 available_at을 가진 별도 행이다.
+데이터는 다음 세 컬럼만 사용한다.
 
 ```csv
-series_id,timestamp,available_at,value
-copper,2024-01-07T00:00:00Z,2024-01-07T00:00:00Z,100.0
-copper,2024-01-14T00:00:00Z,2024-01-14T00:00:00Z,101.0
+series_id,timestamp,value
+copper,2024-01-07T00:00:00Z,100.0
+copper,2024-01-14T00:00:00Z,101.0
 ```
 
-위 두 행은 형식 설명용이며 실제 구리 가격이 아니다. 파일에 포함되는 모든 시각은 근거가 있어야 한다. 입력값이 없거나 값의 이용 가능 시각이 불명확하면 먼저 원본 자료를 확인한다.
+위 두 행은 형식 설명용이며 실제 구리 가격이 아니다. 한 시계열에서 같은 timestamp는 한 번만 나타나야 한다.
 
 계획에는 모델용 일정 `origins.jsonl`, 평가 전용 정답 `expected.jsonl`, 공통 경계 제외 기록과 `lock.json`이 생성된다. **expected 원장을 adapter에 전달하지 않는다.** scorer는 별도 프로세스에서 실행하는 것이 원칙이다.
 
@@ -53,7 +53,7 @@ copper,2024-01-14T00:00:00Z,2024-01-14T00:00:00Z,101.0
 
 builtin은 `information_set=target_history_only`, `learning_regime=from_scratch`, `refit_policy=each_origin`, 빈 quantile grid가 필요하다. 명세가 다르면 자동으로 맞춰 실행하지 않고 거부한다.
 
-baseline의 training_seconds=0은 파라미터 최적화 학습을 수행하지 않는다는 뜻이다. inference_seconds는 baseline 산술 계산만 측정하며 snapshot 작성이나 파일 입출력을 포함하지 않는다. 다른 실행기의 end-to-end 시간과 그대로 비교하지 않는다.
+baseline의 training_seconds=0은 파라미터 최적화 학습을 수행하지 않는다는 뜻이다. inference_seconds는 baseline 산술 계산만 측정하며 파일 입출력을 포함하지 않는다. 다른 실행기의 end-to-end 시간과 그대로 비교하지 않는다.
 
 ## 4. 다른 모델의 원장 제출
 
@@ -64,8 +64,10 @@ manifest에는 protocol/data hash, track, model 버전·코드 hash·설정, 감
 forecast 한 행의 형식은 다음과 같다. 수치와 날짜는 설명용이다.
 
 ```json
-{"series_id":"copper","origin":"2024-01-14T00:00:00Z","target_time":"2024-01-21T00:00:00Z","horizon":1,"seed":0,"status":"ok","point":101.5,"quantiles":{},"fit_cutoff":"2024-01-14T00:00:00Z","preprocess_cutoff":"2024-01-14T00:00:00Z","max_available_at":"2024-01-14T00:00:00Z"}
+{"series_id":"copper","origin":"2024-01-14T00:00:00Z","target_time":"2024-01-21T00:00:00Z","horizon":1,"seed":0,"status":"ok","point":101.5,"quantiles":{},"fit_cutoff":"2024-01-14T00:00:00Z","preprocess_cutoff":"2024-01-14T00:00:00Z"}
 ```
+
+`fit_cutoff`와 `preprocess_cutoff`는 각각 학습과 전처리에 사용한 시간 범위의 상한이며 forecast origin을 넘을 수 없다.
 
 확률 track이면 `quantiles`를 `{"0.1":95.0,"0.5":101.5,"0.9":109.0}`처럼 넣는다. 요청한 grid와 정확히 일치해야 한다. median track에서는 point가 q0.5와 같아야 한다.
 
@@ -102,6 +104,6 @@ coverage 열은 제출/성공 표본 비율이다. Prediction interval coverage�
 
 ## 명시적 한계
 
-동봉 planner는 데이터를 메모리에 읽고 origin마다 vintage를 탐색하는 소규모 참조 구현이다. 대규모 panel에서는 indexed as-of 저장소나 기존 benchmark 실행기를 사용한다.
+동봉 planner는 정렬된 정적 시계열을 메모리에 읽는 소규모 참조 구현이다. 데이터 발표 지연, 실제 입수 시각, 과거 수정 이력은 검증하지 않는다. 다른 달력이나 ragged panel은 외부 adapter가 필요하다.
 
 동봉 실행기는 외생변수 학습, full HPO, 분산/GPU 스케줄링, 서명된 immutable registry와 물리적 holdout 접근 제어를 제공하지 않는다. adapter의 실제 학습 자료나 예산 집행은 별도 감사 대상이다. runtime 설정 문자열만으로 공정성이 증명되지 않는다.
