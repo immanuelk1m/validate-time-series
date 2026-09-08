@@ -19,7 +19,7 @@
 | Fold 내부 전처리 | P1 §3.5, PDF 17–19쪽 | 전처리 cutoff 검사와 코드 감사를 분리 |
 | Rolling origin, expanding/sliding | P1 §4.1, PDF 20–24쪽 | task별 기간·stride·재학습 주기를 명세 |
 | Randomized CV의 조건부 타당성 | P1 §4.1.3, PDF 22–23쪽 | blanket 금지로 인용하지 않음; 기본 경로는 chronological |
-| 재학습과 입력 갱신의 구분 | P1 PDF 21쪽; P2 §4.3.1, PDF 7쪽 | 매 origin refit을 모든 모델에 일괄 강제하지 않음 |
+| 재학습 정책 | P1 PDF 21쪽; P2 §4.3.1, PDF 7쪽 | 매 origin refit을 모든 모델에 일괄 강제하지 않음 |
 | 지표의 정의역·예측 함수 | P1 §4.2, PDF 25–36쪽 | mean/median, 0 분모, 서로 다른 scale을 구분 |
 | MASE의 training scale | P1 §4.2; P2 Eq. 14, PDF 7쪽 | test naive 상대오차를 별도로 계산 |
 | 통일된 네 계층과 interface | P2 §4.4/Fig. 7, PDF 8쪽 | 데이터·모델·평가·보고를 분리 |
