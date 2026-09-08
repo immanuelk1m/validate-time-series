@@ -114,7 +114,7 @@ validation-forecast는 사후 탐색 감사로 표시하고 확인 가능한 코
 
 ## 명시적 한계
 
-동봉 planner는 정렬된 정적 시계열을 메모리에 읽는 소규모 참조 구현이다. 데이터 발표 지연, 실제 입수 시각, 과거 수정 이력은 검증하지 않는다. 다른 달력이나 ragged panel은 외부 adapter가 필요하다.
+동봉 planner는 정렬된 정적 시계열을 메모리에 읽는 소규모 참조 구현이다. 다른 달력이나 ragged panel은 외부 adapter가 필요하다.
 
 동봉 실행기는 외생변수 학습, full HPO, 분산/GPU 스케줄링, 서명된 immutable registry와 물리적 holdout 접근 제어를 제공하지 않는다. adapter의 실제 학습 자료나 예산 집행은 별도 감사 대상이다. runtime 설정 문자열만으로 공정성이 증명되지 않는다.
 
