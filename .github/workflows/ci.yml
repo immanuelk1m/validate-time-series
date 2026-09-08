@@ -31,3 +31,14 @@ jobs:
         run: python tools/test_repository.py
       - name: Synthetic end-to-end smoke test
         run: python skills/validate-time-series/scripts/demo.py --out "$RUNNER_TEMP/ts-validation-smoke"
+      - name: Package tested source
+        if: matrix.python-version == '3.11'
+        run: git archive --format=zip --output="$RUNNER_TEMP/forecast-skills-source.zip" HEAD
+      - name: Upload tested source
+        if: matrix.python-version == '3.11'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: forecast-skills-source
+          path: ${{ runner.temp }}/forecast-skills-source.zip
+          if-no-files-found: error
+          retention-days: 7
