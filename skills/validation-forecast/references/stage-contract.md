@@ -54,4 +54,4 @@ K개의 임의 train/test 구간, nested TSCV의 내부 Fold, gap/purge와 주�
 
 원장 coverage=1이나 scorer의 `ELIGIBLE`만으로 TSCV 실행을 PASS로 처리하지 않는다. 계획·Fold 로그·fit 경계를 함께 확인한다. 중요한 항목이 UNKNOWN이면 전체 보고서에는 추가 검증 필요, 위반이 있으면 계획 미준수로 표시하고 자동 순위와 구분한다.
 
-사전 계획이 없으면 RETROSPECTIVE로 기술한다. 사후 작성한 lock을 사전 등록의 근거로 바꾸지 않는다. 재설계는 새 plan-forecast 작업과 새 protocol/version으로 진행하고 기존 결과를 보존한다. 데이터 이용 가능 시점과 Vintage 검증은 두 단계 모두 범위 밖이다.
+사전 계획이 없으면 RETROSPECTIVE로 기술한다. 사후 작성한 lock을 사전 등록의 근거로 바꾸지 않는다. 재설계는 새 plan-forecast 작업과 새 protocol/version으로 진행하고 기존 결과를 보존한다.
