@@ -6,7 +6,7 @@ refit_and_state_updates,,,,UNKNOWN
 horizons_stride_and_evaluation_keys,,,,UNKNOWN
 inner_tuning_label_gap_and_purge,,,,UNKNOWN
 preprocessing_feature_selection,,,,UNKNOWN
-exogenous_and_cross_series_boundaries,,,,UNKNOWN
+exogenous_inputs,,,,UNKNOWN
 calibration_and_test_selection,,,,UNKNOWN
 pretraining_policy,,,,UNKNOWN
 baselines_seeds_failures_and_budget,,,,UNKNOWN
