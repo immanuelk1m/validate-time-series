@@ -24,13 +24,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install evaluation dependencies
-        run: python -m pip install -r skills/validate-time-series/scripts/requirements.txt
+        run: python -m pip install -r skills/validation-forecast/scripts/requirements.txt
       - name: Evaluation regression checks
-        run: python skills/validate-time-series/scripts/test_validation.py
+        run: python skills/validation-forecast/scripts/test_validation.py
+      - name: Forecast stage and handoff checks
+        run: python tools/test_forecast_modes.py
       - name: Repository and publication guard checks
         run: python tools/test_repository.py
       - name: Synthetic end-to-end smoke test
-        run: python skills/validate-time-series/scripts/demo.py --out "$RUNNER_TEMP/ts-validation-smoke"
+        run: python skills/validation-forecast/scripts/demo.py --out "$RUNNER_TEMP/ts-validation-smoke"
       - name: Package tested source
         if: matrix.python-version == '3.11'
         run: git archive --format=zip --output="$RUNNER_TEMP/forecast-skills-source.zip" HEAD

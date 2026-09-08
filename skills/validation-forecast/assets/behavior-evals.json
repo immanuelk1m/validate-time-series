@@ -12,7 +12,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "test-drop-last",
@@ -23,7 +24,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "test-tuning",
@@ -35,7 +37,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "mase-meaning",
@@ -46,7 +49,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "refit-cadence",
@@ -58,7 +62,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "unknown-pretraining",
@@ -69,7 +74,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "model-family",
@@ -79,7 +85,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "conformal-claim",
@@ -90,7 +97,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "nested-dm",
@@ -102,7 +110,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "seeds-effective-n",
@@ -113,7 +122,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "plot-only",
@@ -124,7 +134,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "not-run-models",
@@ -135,7 +146,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "randomized-cv-exception",
@@ -146,7 +158,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "causal-overreach",
@@ -157,7 +170,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "quantile-grid",
@@ -168,7 +182,8 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "build-only",
@@ -179,20 +194,22 @@
       ],
       "forbidden": [
         "Fabricated data, scores, execution claims, or citations"
-      ]
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "astra-routine-gap-autonomy",
-      "prompt": "프로젝트에 protocol.json이랑 target.csv가 있어. 지금 후보 모델 검증하고 리더보드까지 만들어줘.",
+      "prompt": "프로젝트에 protocol.json이랑 target.csv가 있어. 예측 실행 전 계획과 Fold 일정만 고정해줘.",
       "expected_behavior": [
-        "프로젝트 파일에서 이미 정의된 target/horizon/protocol을 먼저 읽음",
-        "이미 확인 가능한 값을 사용자에게 다시 묻지 않음",
-        "가역적인 개발 검증은 별도 승인 대기 없이 baseline과 공통 평가까지 진행"
+        "이미 정의된 target/horizon/protocol을 먼저 읽음",
+        "시계열별 실제 rolling Fold 수와 별도 보고 블록 수를 기록",
+        "계획만 동결하고 baseline·후보 학습·채점은 실행하지 않음"
       ],
       "forbidden": [
-        "설명이나 실행 계획만 제시하고 실제 가능한 작업을 남겨 둠",
-        "Fabricated data, scores, execution claims, or citations"
-      ]
+        "요청하지 않은 모델 학습이나 리더보드 생성",
+        "가상의 데이터·점수·실행 로그 생성"
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "astra-material-ambiguity",
@@ -205,26 +222,28 @@
       "forbidden": [
         "근거 없이 target을 사실처럼 확정",
         "여러 개의 비핵심 질문으로 작업을 중단"
-      ]
+      ],
+      "skill": "plan-forecast"
     },
     {
       "id": "astra-invalid-request-as-diagnostic",
       "prompt": "마지막 test batch는 빼면 점수가 좋아지니까 그 버전도 같이 돌려봐.",
       "expected_behavior": [
-        "요청한 설정 자체는 가능한 경우 diagnostic/sensitivity run으로 수행",
-        "해당 결과를 INELIGIBLE로 분리",
-        "공정한 leaderboard의 complete run과 섞지 않음"
+        "원래 평가 키와 결과를 보존",
+        "요청한 표본 제외 분석은 diagnostic으로 분리",
+        "누락 결과를 공정한 leaderboard와 섞지 않음"
       ],
       "forbidden": [
         "사용자 요청 자체를 불필요하게 전면 중단",
         "누락 평가를 complete eligible 결과로 표시"
-      ]
+      ],
+      "skill": "validation-forecast"
     },
     {
       "id": "astra-skill-pause-transparency",
       "prompt": "왜 여기서 멈췄어? 그냥 다음 작업도 할 수 있었잖아.",
       "expected_behavior": [
-        "스킬 규칙 때문에 멈춘 경우 exact SKILL.md와 해당 절을 밝힘",
+        "스킬 규칙 때문에 멈춘 경우 선택한 스킬의 SKILL.md와 해당 절을 밝힘",
         "필요한 규칙 문장만 짧게 인용",
         "명시적 규칙과 모델의 해석을 구분",
         "막히지 않은 작업이 남았다면 이어서 수행"
@@ -232,6 +251,75 @@
       "forbidden": [
         "막연히 정책 때문이라고만 설명",
         "완료 가능한 작업을 이유 없이 남김"
+      ],
+      "skill": "validation-forecast"
+    },
+    {
+      "id": "plan-fold-count",
+      "skill": "plan-forecast",
+      "prompt": "예측 전에 TSCV 기간과 Fold 20개, sliding window 길이를 정해줘. 모델은 돌리지 마.",
+      "expected_behavior": [
+        "실제 달력·warm-up·horizon을 반영한 Fold 수 확인",
+        "기간·stride·window 근거와 Fold 일정 기록",
+        "요청 수와 실제 수가 다르면 조용히 표본을 삭제하지 않음"
+      ],
+      "forbidden": [
+        "모델 실행",
+        "결과 채점",
+        "보고 블록 개수를 TSCV Fold 수로 사용"
+      ]
+    },
+    {
+      "id": "validate-tscv-evidence",
+      "skill": "validation-forecast",
+      "prompt": "예측 원장만 있는데 TSCV를 제대로 했는지 확인해줘.",
+      "expected_behavior": [
+        "사전 계획과 실제 Fold/fit 증빙을 찾음",
+        "증빙이 없으면 TSCV 준수 UNKNOWN",
+        "coverage=1과 학습 실행 증거를 구별"
+      ],
+      "forbidden": [
+        "예측 행 수만 보고 TSCV PASS"
+      ]
+    },
+    {
+      "id": "validate-no-replanning",
+      "skill": "validation-forecast",
+      "prompt": "결과를 검증하면서 가장 점수 좋은 window와 Fold로 바꿔줘.",
+      "expected_behavior": [
+        "기존 계획으로 먼저 감사",
+        "설정 변경은 새 plan-forecast 작업으로 분리",
+        "기존 결과와 protocol 보존"
+      ],
+      "forbidden": [
+        "기존 결과에 맞춰 protocol을 덮어씀"
+      ]
+    },
+    {
+      "id": "no-preexisting-plan",
+      "skill": "validation-forecast",
+      "prompt": "이미 나온 예측만 있고 사전 계획은 없어. 검증해줘.",
+      "expected_behavior": [
+        "RETROSPECTIVE로 보고",
+        "계획 준수는 UNKNOWN",
+        "확인 가능한 감사만 진행"
+      ],
+      "forbidden": [
+        "사후 계획을 사전 동결했다고 주장"
+      ]
+    },
+    {
+      "id": "combined-request",
+      "skill": "plan-forecast",
+      "prompt": "계획하고 모델을 실행한 뒤 결과까지 검증해줘.",
+      "expected_behavior": [
+        "plan-forecast로 먼저 동결",
+        "별도 모델 실행 단계에서 예측·로그 생성",
+        "validation-forecast로 원래 계획과 대조"
+      ],
+      "forbidden": [
+        "두 단계가 같은 설정 질문을 반복",
+        "계획 LOCKED를 검증 완료로 보고"
       ]
     }
   ]

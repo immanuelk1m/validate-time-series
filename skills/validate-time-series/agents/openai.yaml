@@ -1,4 +1,0 @@
-interface:
-  display_name: "시계열 예측 검증"
-  short_description: "누수 없는 공통 protocol로 모델을 검증하고 리더보드 생성"
-  default_prompt: "$validate-time-series로 현재 시계열 예측 작업을 끝까지 검증해줘: 문맥과 파일에서 이미 알 수 있는 값은 추론하고, protocol과 leakage guardrail을 고정한 뒤 baseline→후보→공통 평가→리더보드까지 진행하되 결과를 바꾸는 핵심 정보가 없을 때만 질문해."
