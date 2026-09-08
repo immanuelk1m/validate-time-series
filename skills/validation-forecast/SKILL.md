@@ -13,7 +13,7 @@ description: "Audit and score time-series forecasts AFTER model execution agains
 
 이 단계에서 split, Fold 수, window, horizon, 주 지표, 후보나 seed를 결과에 맞춰 바꾸지 않는다. 모델을 새로 학습하거나 HPO를 실행하지 않는다. 변경이 필요하면 원래 결과를 보존하고 plan-forecast에서 새 protocol/version을 만든 뒤 별도 실행으로 넘긴다.
 
-데이터 이용 가능 시점과 Vintage 검증은 제외된 범위다. 해당 메타데이터를 요구하거나 그 부재로 검증을 차단하지 않는다. 시간순 학습 경계, 전처리와 test 누수 검사는 유지한다.
+시간순 학습 경계, 전처리와 test 누수 검사는 유지한다.
 
 ## 1. 계획과 결과 확보
 
