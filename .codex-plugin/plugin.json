@@ -1,6 +1,6 @@
 {
   "name": "validate-time-series",
   "version": "1.1.0",
-  "description": "Locked-protocol time-series forecast validation with point-in-time checks, baselines, and traceable leaderboards.",
+  "description": "Locked-protocol time-series forecast validation with rolling evaluation, baselines, and traceable leaderboards.",
   "skills": "./skills/"
 }
