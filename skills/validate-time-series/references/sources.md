@@ -16,7 +16,7 @@
 |---|---|---|
 | 단순하고 적절한 baseline | P1 §3.1, PDF 7–14쪽 | naive 필수; 계절성에 맞는 seasonal baseline 검토 |
 | 그래프 모양보다 수치 평가 | P1 §3.4, PDF 15–17쪽 | forecast plot은 sanity check로만 사용 |
-| Fold 내부 전처리·입수 가능 시각 | P1 §3.5, PDF 17–19쪽 | cutoff 검사와 코드 감사를 분리 |
+| Fold 내부 전처리 | P1 §3.5, PDF 17–19쪽 | 전처리 cutoff 검사와 코드 감사를 분리 |
 | Rolling origin, expanding/sliding | P1 §4.1, PDF 20–24쪽 | task별 기간·stride·재학습 주기를 명세 |
 | Randomized CV의 조건부 타당성 | P1 §4.1.3, PDF 22–23쪽 | blanket 금지로 인용하지 않음; 기본 경로는 chronological |
 | 재학습과 입력 갱신의 구분 | P1 PDF 21쪽; P2 §4.3.1, PDF 7쪽 | 매 origin refit을 모든 모델에 일괄 강제하지 않음 |
@@ -29,7 +29,7 @@
 
 ## 사용자 설계에서 확장한 부분
 
-Point-in-time revision ledger, FM 중복 상태, 프로토콜 hash, model registry, final approval, 위기 국면, worst Fold, 계산 예산 track과 실패 후보 유지 정책은 [U0]와 이 패키지의 운영 설계다. P1은 주로 **점예측 평가**를 다루며 P2의 지표도 점예측 중심이다. 두 논문이 이 모든 기능을 완성형으로 제안했다고 쓰지 않는다.
+FM 중복 상태, 프로토콜 hash, model registry, final approval, 위기 국면, worst Fold, 계산 예산 track과 실패 후보 유지 정책은 [U0]와 이 패키지의 운영 설계다. P1은 주로 **점예측 평가**를 다루며 P2의 지표도 점예측 중심이다. 두 논문이 이 모든 기능을 완성형으로 제안했다고 쓰지 않는다.
 
 P2의 7:1:2/6:2:2 split, horizon 목록, 최대 8개 하이퍼파라미터 집합은 논문의 실험 설정이다. 보편적 권장값으로 복사하지 않았다. 동일 trial 수가 동일 계산량이라는 가정도 하지 않는다.
 

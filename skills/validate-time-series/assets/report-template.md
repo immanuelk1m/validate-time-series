@@ -11,10 +11,9 @@
 | 항목 | 확인값 |
 |---|---|
 | Benchmark / protocol version / phase | |
-| Dataset SHA-256 / truth_as_of | |
+| Dataset SHA-256 | |
 | 목표·단위·horizon 단위·시간대 | |
 | Origin 범위·stride·horizon·학습 길이 | |
-| 이용 가능 시각과 수정 이력 근거 | |
 | Split·전처리·feature 선택·재학습 정책 | |
 | Track별 정보 집합·예산·학습 방식 | |
 | 후보·seed·주 지표·집계 규칙 | |
@@ -22,7 +21,7 @@
 
 ## 감사 결과
 
-[검사한 실제 코드·데이터 범위·로그·source hash를 적는다. 자동 timestamp 검사와 수동 코드 감사를 나눈다. 미확인 항목, 실패/미제출 후보와 누락 표본 수를 숨기지 않는다.]
+[검사한 실제 코드·데이터 범위·로그·source hash를 적는다. 자동 cutoff 검사와 수동 코드 감사를 나눈다. 미확인 항목, 실패/미제출 후보와 누락 표본 수를 숨기지 않는다.]
 
 ## 예측 성능
 

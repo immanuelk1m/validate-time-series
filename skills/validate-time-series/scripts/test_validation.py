@@ -107,7 +107,7 @@ class PipelineTests(unittest.TestCase):
         self.data=[]
         for i in range(40):
             when=v.iso(start+timedelta(days=i))
-            self.data.append({'series_id':'s','timestamp':when,'available_at':when,'value':100+i+math.sin(i)})
+            self.data.append({'series_id':'s','timestamp':when,'value':100+i+math.sin(i)})
         self.write_data()
         self.make_plan()
         self.paths=[]
@@ -120,7 +120,7 @@ class PipelineTests(unittest.TestCase):
 
     def write_data(self):
         with (self.root/'data.csv').open('w',newline='') as handle:
-            writer=csv.DictWriter(handle,fieldnames=['series_id','timestamp','available_at','value'])
+            writer=csv.DictWriter(handle,fieldnames=['series_id','timestamp','value'])
             writer.writeheader();writer.writerows(self.data)
 
     def make_plan(self, name='plan'):
@@ -177,8 +177,8 @@ class PipelineTests(unittest.TestCase):
         self.mutate_forecasts(lambda rows: rows[0].update(horizon=9))
         self.assertEqual(self.score()['drift']['status'],'INVALID')
 
-    def test_future_feature_cutoff_rejected(self):
-        self.mutate_forecasts(lambda rows: rows[0].update(max_available_at='2025-01-01T00:00:00Z'))
+    def test_future_fit_cutoff_rejected(self):
+        self.mutate_forecasts(lambda rows: rows[0].update(fit_cutoff='2025-01-01T00:00:00Z'))
         self.assertEqual(self.score()['drift']['status'],'INVALID')
 
     def test_future_preprocess_cutoff_rejected(self):
@@ -197,7 +197,7 @@ class PipelineTests(unittest.TestCase):
         self.mutate_manifest(lambda m:m.update(protocol_sha256='0'*64))
         self.assertEqual(self.score()['drift']['status'],'INVALID')
 
-    def test_data_snapshot_mismatch_rejected(self):
+    def test_data_hash_mismatch_rejected(self):
         self.mutate_manifest(lambda m:m.update(data_sha256='0'*64))
         self.assertEqual(self.score()['drift']['status'],'INVALID')
 
@@ -208,27 +208,18 @@ class PipelineTests(unittest.TestCase):
     def test_timezone_required(self):
         with self.assertRaises(ValueError):v.stamp('2020-01-01')
 
-    def test_duplicate_vintage_rejected(self):
+    def test_duplicate_observation_rejected(self):
         self.data.append(self.data[0]);self.write_data()
         with self.assertRaises(ValueError):v.load_data(self.root/'data.csv',['s'])
-
-    def test_revision_asof_selection(self):
-        rows=[{'timestamp':v.stamp('2020-01-01T00:00:00Z'),'available_at':v.stamp(a),'value':value}
-              for a,value in [('2020-01-01T00:00:00Z',1),('2020-01-10T00:00:00Z',9)]]
-        self.assertEqual(next(iter(v.snapshot(rows,v.stamp('2020-01-05T00:00:00Z')).values()))['value'],1)
-        self.assertEqual(next(iter(v.snapshot(rows,v.stamp('2020-01-11T00:00:00Z')).values()))['value'],9)
-
-    def test_unreleased_training_target_blocked(self):
-        self.data[0]['available_at']='2025-01-01T00:00:00Z';self.write_data()
-        with self.assertRaises(ValueError):self.make_plan('blocked')
 
     def test_future_perturbation_does_not_change_history(self):
         data=v.load_data(self.root/'data.csv',['s'])['s']
         origin=v.stamp('2020-01-15T00:00:00Z')
-        before=v.snapshot(data,origin)
+        before=[r['value'] for r in v.history_at(data,origin,self.p['split'])[0]]
         for row in data:
             if row['timestamp']>origin:row['value']+=1000000
-        self.assertEqual(before,v.snapshot(data,origin))
+        after=[r['value'] for r in v.history_at(data,origin,self.p['split'])[0]]
+        self.assertEqual(before,after)
 
     def test_final_without_selection_blocked(self):
         self.p['phase']='final'

@@ -104,9 +104,9 @@ def validate_schema(value: Any, name: str) -> None:
 def validate_protocol(p: dict) -> None:
     validate_schema(p, 'protocol')
     split = p['split']
-    start, end, target_end, truth_end = map(stamp, [split['origin_start'], split['origin_end'], split['target_end'], p['truth_as_of']])
-    if not start <= end < target_end <= truth_end:
-        fail('require origin_start <= origin_end < target_end <= truth_as_of')
+    start, end, target_end = map(stamp, [split['origin_start'], split['origin_end'], split['target_end']])
+    if not start <= end < target_end:
+        fail('require origin_start <= origin_end < target_end')
     maximum = split['max_train_size']
     if split['window'] == 'expanding' and maximum is not None:
         fail('expanding window requires max_train_size=null')
@@ -149,53 +149,39 @@ def load_data(path: Path, ids: list[str]) -> dict[str, list[dict]]:
     seen = set()
     with path.open(newline='', encoding='utf-8-sig') as handle:
         reader = csv.DictReader(handle)
-        if set(reader.fieldnames or []) != {'series_id', 'timestamp', 'available_at', 'value'}:
-            fail('data columns must be exactly series_id,timestamp,available_at,value')
+        if set(reader.fieldnames or []) != {'series_id', 'timestamp', 'value'}:
+            fail('data columns must be exactly series_id,timestamp,value')
         for line, row in enumerate(reader, 2):
             if None in row or any(value is None for value in row.values()):
                 fail(f'malformed CSV row {line}')
-            t, a = stamp(row['timestamp']), stamp(row['available_at'])
+            t = stamp(row['timestamp'])
             try:
                 value = float(row['value'])
             except ValueError:
                 fail(f'invalid value at CSV row {line}')
-            if not math.isfinite(value) or a < t:
-                fail(f'row {line}: require finite observed value and available_at >= timestamp')
-            key = row['series_id'], t, a
+            if not math.isfinite(value):
+                fail(f'row {line}: require finite observed value')
+            key = row['series_id'], t
             if key in seen:
-                fail(f'duplicate observation vintage at row {line}')
+                fail(f'duplicate observation at row {line}')
             seen.add(key)
             if row['series_id'] in ids:
-                data[row['series_id']].append({'timestamp':t, 'available_at':a, 'value':value})
+                data[row['series_id']].append({'timestamp':t, 'value':value})
     if set(data) != set(ids):
         fail('one or more requested series are absent')
-    calendars = [sorted({r['timestamp'] for r in data[s]}) for s in ids]
+    calendars = [sorted(r['timestamp'] for r in data[s]) for s in ids]
     if any(cal != calendars[0] for cal in calendars[1:]):
         fail('bundled planner requires an aligned target calendar; use an external plan adapter for ragged panels')
     return dict(data)
 
 
-def snapshot(rows: list[dict], origin: datetime) -> dict[datetime, dict]:
-    """Latest available vintage of each already observed point, as of the origin."""
-    # ponytail: linear vintage scan per origin; use an indexed as-of store for large panels.
-    values = {}
-    for row in rows:
-        t = row['timestamp']
-        if t <= origin and row['available_at'] <= origin:
-            if t not in values or row['available_at'] > values[t]['available_at']:
-                values[t] = row
-    return values
-
-
 def history_at(rows: list[dict], origin: datetime, split: dict) -> tuple[list[dict], list[datetime]]:
-    times = sorted({r['timestamp'] for r in rows if r['timestamp'] <= origin})
+    values = {r['timestamp']:r for r in rows if r['timestamp'] <= origin}
+    times = sorted(values)
     if split['window'] == 'sliding':
         times = times[-split['max_train_size']:]
-    values = snapshot(rows, origin)
     if len(times) < split['min_train_size'] or not times or times[-1] != origin:
         fail(f'insufficient history at {iso(origin)}')
-    if any(t not in values for t in times):
-        fail(f'target history unavailable at {iso(origin)}; do not drop or backfill ragged observations')
     return [values[t] for t in times], times
 
 
@@ -248,8 +234,8 @@ def build_plan(protocol: dict, data: dict[str, list[dict]]) -> tuple[list[dict],
     horizons = sorted(protocol['horizons'])
     for series in protocol['series_ids']:
         rows = data[series]
-        calendar = sorted({r['timestamp'] for r in rows})
-        truth = snapshot(rows, stamp(protocol['truth_as_of']))
+        truth = {r['timestamp']:r for r in rows}
+        calendar = sorted(truth)
         candidates = [i for i, t in enumerate(calendar) if start <= t <= end][::split['stride']]
         for i in candidates:
             origin = calendar[i]
@@ -265,8 +251,6 @@ def build_plan(protocol: dict, data: dict[str, list[dict]]) -> tuple[list[dict],
                             'train_start':iso(times[0]),'origin_index':idx})
             for h in horizons:
                 target = calendar[i+h]
-                if target not in truth:
-                    fail(f'truth not available by truth_as_of for {series} {iso(target)}')
                 expected.append({'series_id':series,'origin':iso(origin),'target_time':iso(target),
                                  'horizon':h,'origin_index':idx,'y_true':truth[target]['value'],
                                  'y_origin':y[-1],'naive':y[-1], 'scale_abs':scale_abs,'scale_sq':scale_sq,
@@ -326,12 +310,12 @@ def baseline_run(plan: Path, data_path: Path, method: str, out: Path) -> None:
         started = perf_counter()
         predictions = predict_baseline([r['value'] for r in history], request['horizons'], method, p['metrics']['seasonal_period'])
         inference_seconds += perf_counter() - started
-        available = iso(max(r['available_at'] for r in history))
+        cutoff = request['origin']
         for seed in p['seeds']:
             for h, target, value in zip(request['horizons'], request['target_times'], predictions):
                 records.append({'series_id':request['series_id'],'origin':request['origin'],
                                 'target_time':target,'horizon':h,'seed':seed,'status':'ok','point':value,'quantiles':{},
-                                'fit_cutoff':available,'preprocess_cutoff':available,'max_available_at':available})
+                                'fit_cutoff':cutoff,'preprocess_cutoff':cutoff})
     spec = {'model_id':method,'model_version':VERSION,'code_sha256':file_hash(Path(__file__)),
             'config':{'seasonal_period':p['metrics']['seasonal_period']},'family':'baseline'}
     def writer(stage: Path) -> None:
@@ -339,7 +323,7 @@ def baseline_run(plan: Path, data_path: Path, method: str, out: Path) -> None:
         manifest = {'schema_version':1,'run_id':method,'protocol_sha256':lock['protocol_sha256'],
                     'data_sha256':lock['data_sha256'],'track_id':registered['track_id'],'model_spec':spec,
                     'forecast_file':'forecasts.jsonl',
-                    'audit':{'status':'reviewed','evidence':'Built-in as-of history path; source and tests bundled. Not an independent audit.',
+                    'audit':{'status':'reviewed','evidence':'Built-in chronological history path; source and tests bundled. Not an independent audit.',
                              'pretraining_overlap':'not_applicable'},
                     'runtime':{'training_seconds':0.0,'inference_seconds':inference_seconds,'hardware':f'{platform.system()} {platform.machine()} CPU; baseline arithmetic only'},
                     'comparison_to_naive':'not_assessed'}
@@ -367,7 +351,7 @@ def check_forecasts(manifest: dict, rows: list[dict], expected: list[dict], p: d
     levels = p['tracks'][manifest['track_id']]['quantile_levels']
     functional = p['tracks'][manifest['track_id']]['point_functional']
     allowed = {'series_id','origin','target_time','horizon','seed','status','point','quantiles',
-               'fit_cutoff','preprocess_cutoff','max_available_at','error'}
+               'fit_cutoff','preprocess_cutoff','error'}
     for row in rows:
         if set(row) - allowed:
             fail(f'unrecognized forecast columns: {set(row)-allowed}')
@@ -385,9 +369,9 @@ def check_forecasts(manifest: dict, rows: list[dict], expected: list[dict], p: d
                 fail('failed forecast must include an error reason')
             continue
         origin = stamp(row['origin'])
-        cutoffs = [stamp(row[name]) for name in ['fit_cutoff','preprocess_cutoff','max_available_at']]
-        if any(t > origin for t in cutoffs) or max(cutoffs[:2]) > cutoffs[2]:
-            fail('future-information cutoff or inconsistent availability declaration')
+        cutoffs = [stamp(row[name]) for name in ['fit_cutoff','preprocess_cutoff']]
+        if any(t > origin for t in cutoffs):
+            fail('future-information cutoff')
         value = number(row['point'], 'point')
         quantiles = row.get('quantiles', {})
         if not isinstance(quantiles, dict) or {float(q) for q in quantiles} != set(levels):
@@ -596,11 +580,11 @@ def score_runs(plan: Path, paths: list[Path], out: Path) -> None:
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     commands=parser.add_subparsers(dest='command',required=True)
-    command=commands.add_parser('lock',help='Freeze protocol, target snapshot, and expected scoring keys')
+    command=commands.add_parser('lock',help='Freeze protocol, target data, and expected scoring keys')
     command.add_argument('--protocol',type=Path,required=True)
     command.add_argument('--data',type=Path,required=True)
     command.add_argument('--out',type=Path,required=True)
-    command=commands.add_parser('baseline',help='Generate one registered baseline using only as-of history')
+    command=commands.add_parser('baseline',help='Generate one registered baseline using chronological history')
     command.add_argument('--plan',type=Path,required=True)
     command.add_argument('--data',type=Path,required=True)
     command.add_argument('--method',choices=['naive','drift','seasonal-naive'],required=True)
