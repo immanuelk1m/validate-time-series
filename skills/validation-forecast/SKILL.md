@@ -32,8 +32,8 @@ description: "Audit and score time-series forecasts AFTER model execution agains
 | TSCV 실행 | 실제 origin/Fold 로그, 시계열별 Fold 수, train/target 기간과 관측 수 |
 | 학습 창·재학습 | expanding/sliding 적용, 창 길이, fit·state update 시점과 저장된 학습 상태 |
 | 분할·튜닝 | stride·horizon·gap·purge·내부 split, HPO trial·early stopping·holdout 사용 기록 |
-| 학습·전처리 누수 | scaler·imputer·feature/lag 선택·분해·그래프 추정의 실제 fit 구간 |
-| Label·외생변수 | multi-horizon label 경계, 미래 가격·수급 실제값 유입, 시계열 간 미래정보 전파 |
+| 학습·전처리 누수 | scaler·imputer·feature/lag 선택·분해의 실제 fit 구간 |
+| Label·외생변수 | multi-horizon label 경계, 미래 가격·수급 실제값 유입 |
 | Calibration·선택 | OOS 잔차와 실현 horizon, ensemble 가중치·임계값 선택에 final test를 썼는지 |
 | 사전학습 | checkpoint·중복 정책과 증빙, unknown을 clean zero-shot으로 바꿨는지 |
 | 표본·실패·예산 | 모든 series×origin×horizon×seed, 실패/미제출, 재학습·계산 예산 로그 |
